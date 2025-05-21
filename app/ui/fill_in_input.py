@@ -5,6 +5,24 @@ import os
 import re
 import pyttsx3
 import time
+import requests
+import tempfile
+from playsound import playsound
+
+def play_google_tts(text, lang='en'):
+    tts_url = f'https://translate.google.com/translate_tts?ie=UTF-8&q={text}&tl={lang}&client=tw-ob'
+    headers = {'User-Agent': 'Mozilla/5.0'}
+    response = requests.get(tts_url, headers=headers)
+    if response.status_code == 200:
+        with tempfile.NamedTemporaryFile(delete=False, suffix='.mp3') as tmp_file:
+            tmp_file.write(response.content)
+            tmp_path = tmp_file.name
+        playsound(tmp_path)
+        os.remove(tmp_path)
+    else:
+        print("Failed to get TTS audio")
+
+
 
 def run_fill_in_input():
     start_time = time.time()
@@ -49,8 +67,10 @@ def run_fill_in_input():
     current_word = {"answer": "", "example": "", "meaning": "", "full_translation": ""}
 
     def speak_example():
-        engine.say(current_word["example"])
-        engine.runAndWait()
+        # engine.say(current_word["example"])
+        # engine.runAndWait()
+        play_google_tts(current_word["example"], lang='en')
+        
 
     def show_translation():
         full = current_word["full_translation"]
