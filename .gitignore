@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.env/
+.venv/
+*.pyo
+
+# OS / Editor
+.DS_Store
+.vscode/
+.idea/
+
+# Pipenv
+Pipfile.lock
+
